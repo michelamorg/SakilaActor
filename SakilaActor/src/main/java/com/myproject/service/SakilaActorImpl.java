@@ -52,6 +52,8 @@ public class SakilaActorImpl implements SakilaActor {
 			log.info(a.getActorId() + " " + a.getFirstName() + " " + a.getLastName() + " " + a.getLastUpdate());
 
 		}
+		
+		
 		log.info("trovato attore tramite nome!");
 		return trovaConNome;
 	}
