@@ -26,6 +26,7 @@ import com.myproject.conn.DbConn;
 import com.myproject.model.Actor;
 
 public class ActorDaoImpl implements ActorDao {
+
 	private static final Logger log = Logger.getLogger(ActorDaoImpl.class);
 
 	private Connection conn;
@@ -91,7 +92,7 @@ public class ActorDaoImpl implements ActorDao {
 	}
 
 	@Override
-	public List<Actor> trovaConId(int id) { 
+	public List<Actor> trovaConId(int id) {
 		try {
 			conn = DbConn.getInstance().getConnection();
 
@@ -185,6 +186,7 @@ public class ActorDaoImpl implements ActorDao {
 			String sql = "UPDATE ACTOR SET FIRST_NAME=? WHERE ACTOR_ID=?";
 
 			pstm = conn.prepareStatement(sql);
+			
 			pstm.setString(1, actor.getFirstName());
 			pstm.setInt(2, actor.getActorId());
 
@@ -245,7 +247,7 @@ public class ActorDaoImpl implements ActorDao {
 	}
 
 	@Override
-	public int insertActor(List<Actor> listActors) {
+	public int insertActor(Actor actor) {
 		int insert = 0;
 		try {
 			conn = DbConn.getInstance().getConnection();
@@ -253,28 +255,23 @@ public class ActorDaoImpl implements ActorDao {
 			String SQL = "insert into actor(actor_id, first_name, last_name, last_update) " + "values (?, ?, ?, ?)";
 
 			pstm = conn.prepareStatement(SQL);
-			for (Actor a : listActors) {
 
-				log.info(a.getActorId() + " " + a.getFirstName() + " " + a.getLastName() + " " + a.getLastUpdate());
+			pstm.setInt(1, actor.getActorId());
+			pstm.setString(2, actor.getFirstName());
+			pstm.setString(3, actor.getLastName());
+			pstm.setString(4, actor.getLastUpdate());
 
-				pstm.setInt(1, a.getActorId());
-				pstm.setString(2, a.getFirstName());
-				pstm.setString(3, a.getLastName());
-				pstm.setString(4, a.getLastUpdate());
-
-				insert = pstm.executeUpdate();
-
-			}
+			insert = pstm.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			log.error(e.getCause());
+
 		} finally {
 			try {
 				pstm.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				log.error(e.getCause());
+
 			}
 			try {
 				conn.close();

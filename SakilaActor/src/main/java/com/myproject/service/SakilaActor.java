@@ -26,7 +26,7 @@ public interface SakilaActor {
 	void modificaNome(Actor actor);
 
 	@WebMethod
-	void inserisciAttore(List<Actor> listActors);
+	void inserisciAttore(Actor actor);
 
 	@WebMethod
 	void cancAttore(int id);
