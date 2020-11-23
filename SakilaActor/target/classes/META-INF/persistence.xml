@@ -3,6 +3,7 @@
   <persistence-unit name="myproject" transaction-type="RESOURCE_LOCAL">
   
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.myproject.model.Actor</class>
    
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/dvdrental"/>
