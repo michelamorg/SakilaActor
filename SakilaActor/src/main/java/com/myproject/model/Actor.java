@@ -11,11 +11,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
@@ -32,30 +30,20 @@ public class Actor {
 
 	@Id
 	@Column(name = "actor_id")
-	@NotEmpty
-	@NotNull
-	@NotBlank
 	private int actorId;
 
-	@Column(name = "first_name")
-	@NotEmpty
 	@Size(min = 3, max = 50, message = "First name deve avere minimo 3 e max 50 caratteri")
-	@NotNull
-	@NotBlank
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "last_name")
-	@NotEmpty
+	
 	@Size(min = 3, max = 50, message = "Last name deve avere minimo 3 e max 50 caratteri")
-	@NotNull
-	@NotBlank
+	@Column(name = "last_name")
 	private String lastName;
 
-	@Column(name = "last_update")
-	@NotEmpty
+	
 	@Size(min = 3, max = 50, message = "Last update deve avere minimo 3 e max 50 caratteri")
-	@NotNull
-	@NotBlank
+	@Column(name = "last_update")
 	private String lastUpdate;
 
 }

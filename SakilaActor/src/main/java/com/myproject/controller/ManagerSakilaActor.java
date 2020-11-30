@@ -1,16 +1,10 @@
 package com.myproject.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
-
 import org.apache.log4j.Logger;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import com.myproject.model.Actor;
 import com.myproject.service.SakilaActorImpl;
 
@@ -21,25 +15,19 @@ public class ManagerSakilaActor {
 
 	public void letturaAttori() {
 		sakilaActorImpl.findAllActor();
-		log.info("Visualizzata la lista degli attori.");
+		log.info("Lettura di tutti gli attori.");
 	}
 
-	public void cercaPerId(@Valid int id, BindingResult bindingResult) {
+	public void cercaPerId(int id) {
 		sakilaActorImpl.findsActorById(id);
-		log.info("Ricerca effettuata.");
+		log.info("Ricerca effettuata tramite id");
 
-		if (bindingResult.hasErrors()) {
-			log.info("Errore");
-		}
 	}
 
-	public void cercaPerNome(@Valid String name, BindingResult bindingResult) {
+	public void cercaPerNome(@Valid String name) {
 		sakilaActorImpl.findsActorByNome(name);
-		log.info("Ricerca effettuata.");
+		log.info("Ricerca effettuata tramite nome");
 
-		if (bindingResult.hasErrors()) {
-			log.info("Errore");
-		}
 	}
 
 	public void aggiornamento(@Valid @ModelAttribute Actor actor, BindingResult bindingResult, Model model) {
@@ -55,7 +43,7 @@ public class ManagerSakilaActor {
 
 		log.info("Input validi.");
 		sakilaActorImpl.modificaNome(actor);
-		log.info("attore aggiornato.");
+		log.info("Attore aggiornato");
 
 	}
 
@@ -74,18 +62,15 @@ public class ManagerSakilaActor {
 
 		log.info("Input validi.");
 		sakilaActorImpl.inserisciAttore(actor);
-		log.info("attore inserito.");
+		log.info("Attore inserito");
 
 	}
 
-	public void eliminazione(@Valid int id, BindingResult bindingResult) {
+	public void eliminazione(int id) {
 		sakilaActorImpl.cancAttore(id);
 
-		log.info("cancellazione.");
+		log.info("Cancellazione effettuata");
 
-		if (bindingResult.hasErrors()) {
-			log.info("Errore");
-		}
 	}
 
 	public void ordineDecrescente() {
@@ -97,13 +82,13 @@ public class ManagerSakilaActor {
 	public void ClausolaWhere() {
 
 		sakilaActorImpl.queryWhere();
-		log.info("Criteria API con where");
+		log.info("Criteria API con clausola where");
 	}
 
 	public void Sp() {
 		sakilaActorImpl.chiamoSp();
 
-		log.info("ricerca nome tramite Stored procedure");
+		log.info("Ricerca nome tramite Stored procedure");
 	}
 
 }

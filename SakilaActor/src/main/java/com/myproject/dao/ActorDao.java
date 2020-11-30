@@ -17,8 +17,7 @@ public interface ActorDao {
 	public int deleteActor(int id);
 
 	public int insertActor(Actor actor);
-	
-	// Jpa
+
 	public void actorWhere();
 
 	public void orderByDescActor();

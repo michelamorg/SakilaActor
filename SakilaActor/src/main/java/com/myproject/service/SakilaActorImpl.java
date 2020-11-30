@@ -21,21 +21,22 @@ public class SakilaActorImpl implements SakilaActor {
 
 	@Override
 	public List<Actor> findAllActor() {
+		log.info("SakilaActorImpl.findAllActor init");
 		List<Actor> list = actorDao.letturaAttori();
 		for (Actor a : list) {
 			log.info(a.getActorId() + " " + a.getFirstName() + " " + a.getLastName() + " " + a.getLastUpdate());
 
 		}
-
-		log.info("Lettura di tutti gli Attori!");
+		log.info("SakilaActorImpl.findAllActor end");
 		return list;
 	}
 
 	@Override
 	public List<Actor> findsActorById(int id) {
+		log.info("SakilaActorImpl.findsActorById init");
 		List<Actor> trovaConId = actorDao.trovaConId(id);
 
-		if (trovaConId == null) { /////
+		if (trovaConId == null) {
 
 		} else {
 
@@ -45,14 +46,16 @@ public class SakilaActorImpl implements SakilaActor {
 			}
 
 		}
+		log.info("SakilaActorImpl.findsActorById end");
 		return trovaConId;
 	}
 
 	@Override
 	public List<Actor> findsActorByNome(String name) {
+		log.info("SakilaActorImpl.findsActorByNome init");
 		List<Actor> trovaConNome = actorDao.TrovaConNome(name);
 
-		if (trovaConNome == null) { ////
+		if (trovaConNome == null) {
 
 		} else {
 
@@ -61,80 +64,71 @@ public class SakilaActorImpl implements SakilaActor {
 
 			}
 		}
-
+		log.info("SakilaActorImpl.findsActorByNome end");
 		return trovaConNome;
 	}
 
 	@Override
-	public void inserisciAttore(Actor actor) { //////
+	public void inserisciAttore(Actor actor) {
+		log.info("SakilaActorImpl.inserisciAttore init");
 		actorDao.insertActor(actor);
 
-		log.info("Attore inserito!");
-	}
-
-	public static Timestamp convertStringToTimestamp(Actor actor) {
-		try {
-			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-			Date date = (Date) formatter.parse(actor.getLastUpdate());
-
-			Timestamp timeStampDate = new Timestamp(date.getTime());
-
-			return timeStampDate;
-		} catch (ParseException e) {
-			System.out.println("Exception :" + e);
-			return null;
-		}
+		log.info("SakilaActorImpl.inserisciAttore end");
 	}
 
 	@Override
 	public void modificaNome(Actor actor) {
-		// List<Actor> list = actorDao.trovaConId(actor.getActorId());
+		log.info("SakilaActorImpl.modificaNome init");
 		int mod = actorDao.updateActor(actor);
 		if (mod > 0) {
-			// actorDao.updateActor(actor);
-			log.info("esiste almeno un record per la modifica!");
+
+			log.info("esiste almeno un record per la modifica");
 			log.info("record aggiornato.");
 
 		} else {
 			log.info("non esiste un record per modificare");
 		}
-
+		log.info("SakilaActorImpl.modificaNome end");
 	}
 
 	@Override
 	public void cancAttore(int id) {
+		log.info("SakilaActorImpl.cancAttore init");
 		int canc = actorDao.deleteActor(id);
-		// List<Actor> list = actorDao.trovaConId(id);
+
 		if (canc > 0) {
-			// actorDao.deleteActor(id);
-			log.info("esiste almeno un record per cancellare !");
+
+			log.info("esiste almeno un record per cancellare");
 			log.info("record cancellato.");
 		} else {
-			log.info("non esiste record da cancellare.");
+			log.info("non esiste record da cancellare");
 		}
-
+		log.info("SakilaActorImpl.cancAttore end");
 	}
 
 	@Override
 	public void chiamoSp() {
+		log.info("SakilaActorImpl.chiamoSp init");
 		actorDao.callSp();
-
-		log.info("Funzione effettuata con JPA");
+		log.info("SakilaActorImpl.chiamoSp end");
 
 	}
 
 	@Override
 	public void queryWhere() {
+		log.info("SakilaActorImpl.queryWhere init");
 		actorDao.actorWhere();
-		log.info("Ho selezionato gli attori con id inferiore a 22!");
+		log.info("SakilaActorImpl.queryWhere end");
+		log.info("Ho selezionato gli attori con id inferiore a 22");
 
 	}
 
 	@Override
 	public void orderBy() {
+		log.info("SakilaActorImpl.orderBy init");
 		actorDao.orderByDescActor();
-		log.info("ordine decrescente!");
+		log.info("SakilaActorImpl.orderBy end");
+		log.info("Ordine decrescente");
 	}
 
 }

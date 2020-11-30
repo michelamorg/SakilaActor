@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.myproject.conn.DbConn;
 import com.myproject.model.Actor;
+import com.myproject.utility.UtilDate;
 
 public class ActorDaoImpl implements ActorDao {
 
@@ -37,7 +38,6 @@ public class ActorDaoImpl implements ActorDao {
 	private List<Actor> trovaConId;
 	private List<Actor> trovaConNome;
 
-//JPA
 	private static final String PERSISTENCE_UNIT = "myproject";
 	private EntityManagerFactory emf;
 	private EntityManager em;
@@ -51,6 +51,7 @@ public class ActorDaoImpl implements ActorDao {
 
 	@Override
 	public List<Actor> letturaAttori() {
+		log.info("ActorDaoImpl.letturaAttori init");
 		try {
 			conn = com.myproject.conn.DbConn.getInstance().getConnection();
 
@@ -72,12 +73,12 @@ public class ActorDaoImpl implements ActorDao {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			log.error(e.getCause());
+			log.error(e.getMessage());
 		} finally {
 			try {
 				stm.close();
-			} catch (SQLException e) {
-				// TODO: handle exception
+			} catch (SQLException e) { //
+				log.error(e.getCause());
 			}
 			try {
 				conn.close();
@@ -86,13 +87,15 @@ public class ActorDaoImpl implements ActorDao {
 			}
 
 		}
-
+		log.info("listActor: " + listActor);
+		log.info("ActorDaoImpl.letturaAttori end");
 		return listActor;
 
 	}
 
 	@Override
 	public List<Actor> trovaConId(int id) {
+		log.info("ActorDaoImpl.trovaConId init");
 		try {
 			conn = DbConn.getInstance().getConnection();
 
@@ -114,27 +117,30 @@ public class ActorDaoImpl implements ActorDao {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			log.error(e.getCause());
+			log.error(e.getMessage());
 		} finally {
 			try {
 				pstm.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				log.error(e.getCause());
 			}
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				log.error(e.getCause());
 			}
 
 		}
+		log.info("trovaConId: " + trovaConId);
+		log.info("ActorDaoImpl.trovaConId end");
 		return trovaConId;
 	}
 
 	@Override
 	public List<Actor> TrovaConNome(String name) {
+		log.info("ActorDaoImpl.TrovaConNome init");
 		try {
 			conn = DbConn.getInstance().getConnection();
 
@@ -158,7 +164,7 @@ public class ActorDaoImpl implements ActorDao {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			log.error(e.getCause());
+			log.error(e.getMessage());
 
 		} finally {
 			try {
@@ -173,12 +179,14 @@ public class ActorDaoImpl implements ActorDao {
 			}
 
 		}
-
+		log.info("trovaConNome: " + trovaConNome);
+		log.info("ActorDaoImpl.TrovaConNome end");
 		return trovaConNome;
 	}
 
 	@Override
 	public int updateActor(Actor actor) {
+		log.info("ActorDaoImpl.updateActor init");
 		int modifica = 0;
 		try {
 			conn = DbConn.getInstance().getConnection();
@@ -186,34 +194,37 @@ public class ActorDaoImpl implements ActorDao {
 			String sql = "UPDATE ACTOR SET FIRST_NAME=? WHERE ACTOR_ID=?";
 
 			pstm = conn.prepareStatement(sql);
-			
+
 			pstm.setString(1, actor.getFirstName());
 			pstm.setInt(2, actor.getActorId());
 
 			modifica = pstm.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		} finally {
 			try {
 				pstm.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				log.error(e.getCause());
+
 			}
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				log.error(e.getCause());
 			}
 
 		}
+		log.info("modifica: " + modifica);
+		log.info("ActorDaoImpl.updateActor end");
 		return modifica;
 	}
 
 	@Override
 	public int deleteActor(int id) {
+		log.info("ActorDaoImpl.deleteActor init");
 		int canc = 0;
 		try {
 			conn = DbConn.getInstance().getConnection();
@@ -227,27 +238,31 @@ public class ActorDaoImpl implements ActorDao {
 			canc = pstm.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		} finally {
 			try {
 				pstm.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				log.error(e.getCause());
 			}
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				log.error(e.getCause());
 			}
 
 		}
+		log.info("canc: " + canc);
+		log.info("ActorDaoImpl.deleteActor end");
 		return canc;
 	}
 
 	@Override
 	public int insertActor(Actor actor) {
+		log.info("ActorDaoImpl.insertActor init");
+
 		int insert = 0;
 		try {
 			conn = DbConn.getInstance().getConnection();
@@ -259,36 +274,37 @@ public class ActorDaoImpl implements ActorDao {
 			pstm.setInt(1, actor.getActorId());
 			pstm.setString(2, actor.getFirstName());
 			pstm.setString(3, actor.getLastName());
-			pstm.setString(4, actor.getLastUpdate());
+			pstm.setTimestamp(4, UtilDate.convertStringToTimestamp(actor.getLastUpdate()));
 
 			insert = pstm.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error(e.getMessage());
 
 		} finally {
 			try {
 				pstm.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				log.error(e.getCause());
 
 			}
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				log.error(e.getCause());
 			}
 
 		}
+		log.info("insert: " + insert);
+		log.info("ActorDaoImpl.insertActor end");
 		return insert;
 
 	}
 
-	// Jpa
-	// NamedStoredProcedureQuery
 	@Override
 	public void callSp() {
+		log.info("ActorDaoImpl.callSp init");
 
 		StoredProcedureQuery sp = em.createStoredProcedureQuery("name_act", Actor.class)
 				.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
@@ -299,13 +315,15 @@ public class ActorDaoImpl implements ActorDao {
 
 		String actNome = (String) sp.getOutputParameterValue(2);
 		System.out.println(actNome);
-		log.info("funzione eseguita per id 5!");
+		log.info("ActorDaoImpl.callSp end");
+		log.info("Funzione eseguita per id 5!");
 
 	}
 
-	// CRITERIA api
 	@Override
 	public void actorWhere() {
+		log.info("ActorDaoImpl.actorWhere init");
+
 		em.getTransaction().begin();
 
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -314,7 +332,7 @@ public class ActorDaoImpl implements ActorDao {
 
 		Root<Actor> act = cq.from(Actor.class);
 
-		cq.where(cb.lessThan(act.get("actorId"), 22)); // selezionare gli attori con id <a 22
+		cq.where(cb.lessThan(act.get("actorId"), 22));
 
 		CriteriaQuery<Actor> select = ((CriteriaQuery<Actor>) cq).select(act);
 
@@ -329,11 +347,12 @@ public class ActorDaoImpl implements ActorDao {
 		}
 
 		em.getTransaction().commit();
-
+		log.info("ActorDaoImpl.actorWhere end");
 	}
 
 	@Override
 	public void orderByDescActor() {
+		log.info("ActorDaoImpl.orderByDescActor init");
 
 		em.getTransaction().begin();
 
@@ -343,7 +362,7 @@ public class ActorDaoImpl implements ActorDao {
 
 		Root<Actor> act = cq.from(Actor.class);
 
-		cq.orderBy(cb.desc(act.get("actorId"))); // ordino in modo decrescente da id
+		cq.orderBy(cb.desc(act.get("actorId"))); 
 
 		CriteriaQuery<Actor> select = cq.select(act);
 
@@ -359,6 +378,7 @@ public class ActorDaoImpl implements ActorDao {
 		}
 
 		em.getTransaction().commit();
+		log.info("ActorDaoImpl.orderByDescActor end");
 
 	}
 }
